@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Math Quiz - Web Version</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        #question {
+            font-size: 24px;
+            margin: 20px;
+        }
+
+        input, button {
+            font-size: 18px;
+            padding: 8px;
+            margin: 5px;
+        }
+
+        #feedback {
+            margin: 10px;
+            font-size: 20px;
+        }
+
+        #summary {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Math Quiz - 2 Digit Numbers</h1>
+    <div id="question">Click Start to begin</div>
+
+    <input type="text" id="answer" placeholder="Enter answer or 'x' to quit" />
+    <button onclick="submitAnswer()">Submit</button>
+    <button onclick="startQuiz()">Start</button>
+
+    <div id="feedback"></div>
+    <div id="score">Score: 0 / 0</div>
+    <div id="summary"></div>
+
+    <script>
+    let a, b, correctAnswer;
+    let score = 0;
+    let total = 0;
+    let quizStarted = false;
+    let startTime;
+
+    function randomTwoDigit() {
+      return Math.floor(Math.random() * 90) + 10;
+    }
+
+    function startQuiz() {
+      score = 0;
+      total = 0;
+      quizStarted = true;
+      startTime = new Date();
+      document.getElementById("summary").innerText = "";
+      generateQuestion();
+    }
+
+    function generateQuestion() {
+      a = randomTwoDigit();
+      b = randomTwoDigit();
+      const op = Math.floor(Math.random() * 9) + 1; // 1 to 9
+      if (op % 2 === 0) {
+        correctAnswer = a - b;
+        document.getElementById("question").innerText = `${a} - ${b} = ?`;
+      } else {
+        correctAnswer = a + b;
+        document.getElementById("question").innerText = `${a} + ${b} = ?`;
+      }
+
+      document.getElementById("answer").value = "";
+      document.getElementById("answer").focus();
+      document.getElementById("feedback").innerText = "";
+    }
+
+    function submitAnswer() {
+      if (!quizStarted) return;
+
+      const input = document.getElementById("answer").value.trim().toLowerCase();
+      if (input === "x") {
+        endQuiz();
+        return;
+      }
+
+      total++;
+      const userAnswer = parseInt(input);
+      if (!isNaN(userAnswer)) {
+        if (userAnswer === correctAnswer) {
+          score++;
+          document.getElementById("feedback").innerText = "✅ Correct!";
+        } else {
+          document.getElementById("feedback").innerText = `❌ Wrong. Correct answer: ${correctAnswer}`;
+        }
+      } else {
+        document.getElementById("feedback").innerText = "⚠️ Invalid input. Try a number or 'x' to quit.";
+        total--; // don't count invalid input
+        return;
+      }
+
+      document.getElementById("score").innerText = `Score: ${score} / ${total}`;
+      generateQuestion();
+    }
+
+    function endQuiz() {
+      quizStarted = false;
+      const totalTimeSec = (new Date() - startTime) / 1000;
+      const avgTime = total === 0 ? 0 : (totalTimeSec / total).toFixed(1);
+      document.getElementById("summary").innerText =
+        `Final Score: ${score} out of ${total} in ${totalTimeSec.toFixed(1)} seconds.
+        Avg time per question: ${avgTime} seconds.`;
+      document.getElementById("question").innerText = "Quiz Ended. Click Start to try again.";
+      document.getElementById("feedback").innerText = "";
+    }
+    </script>
+</body>
+</html>
