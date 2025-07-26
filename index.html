@@ -50,7 +50,7 @@
     <div id="summary"></div>
 
     <script>
-    let a, b, correctAnswer;
+    let a, b, correctAnswer, question;
     let score = 0;
     let total = 0;
     let quizStarted = false;
@@ -76,14 +76,15 @@
       if (op % 2 === 0) {
         correctAnswer = a - b;
         document.getElementById("question").innerText = `${a} - ${b} = ?`;
+        question = `${a} - ${b}`;
       } else {
         correctAnswer = a + b;
         document.getElementById("question").innerText = `${a} + ${b} = ?`;
+        question = `${a} + ${b}`;
       }
 
       document.getElementById("answer").value = "";
       document.getElementById("answer").focus();
-      document.getElementById("feedback").innerText = "";
     }
 
     function submitAnswer() {
@@ -100,12 +101,12 @@
       if (!isNaN(userAnswer)) {
         if (userAnswer === correctAnswer) {
           score++;
-          document.getElementById("feedback").innerText = "✅ Correct!";
+          document.getElementById("feedback").innerHTML = '<span aria-label="Correct" role="img">✅</span> Correct!';
         } else {
-          document.getElementById("feedback").innerText = `❌ Wrong. Correct answer: ${correctAnswer}`;
+          document.getElementById("feedback").innerHTML = `<span aria-label="Wrong" role="img">❌</span> Wrong. Correct answer: ${question} = ${correctAnswer} and not ${userAnswer}.`;
         }
       } else {
-        document.getElementById("feedback").innerText = "⚠️ Invalid input. Try a number or 'x' to quit.";
+        document.getElementById("feedback").innerHTML = '<span aria-label="Warning" role="img">⚠️</span> Invalid input. Try a number or \'x\' to quit.';
         total--; // don't count invalid input
         return;
       }
