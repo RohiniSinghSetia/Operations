@@ -57,7 +57,7 @@
     let startTime;
 
     function randomTwoDigit() {
-      return Math.floor(Math.random() * 90) + 10;
+      return parseFloat((Math.random() * 90 + 10).toFixed(2));;
     }
 
     function startQuiz() {
@@ -74,11 +74,11 @@
       b = randomTwoDigit();
       const op = Math.floor(Math.random() * 9) + 1; // 1 to 9
       if (op % 2 === 0) {
-        correctAnswer = a - b;
+        correctAnswer = (a - b).toFixed(2);
         document.getElementById("question").innerText = `${a} - ${b} = ?`;
         question = `${a} - ${b}`;
       } else {
-        correctAnswer = a + b;
+        correctAnswer = (a + b).toFixed(2);
         document.getElementById("question").innerText = `${a} + ${b} = ?`;
         question = `${a} + ${b}`;
       }
@@ -97,7 +97,7 @@
       }
 
       total++;
-      const userAnswer = parseInt(input);
+      const userAnswer = (Number(input)).toFixed(2);
       if (!isNaN(userAnswer)) {
         if (userAnswer === correctAnswer) {
           score++;
