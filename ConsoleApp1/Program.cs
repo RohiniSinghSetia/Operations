@@ -8,10 +8,10 @@ Console.WriteLine("Type 'x' to quit.\n");
 var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 while (true)
 {
-    int a = rand.Next(10, 100);
-    int b = rand.Next(10, 100);
+    decimal a = rand.Next(1000, 10000)/100.00m;
+    decimal b = rand.Next(1000, 10000)/100.00m;
     int op = rand.Next(1, 10);
-    int correctAnswer;
+    decimal correctAnswer;
     if (op % 2 == 0)
     {
         correctAnswer = a - b;
@@ -30,7 +30,7 @@ while (true)
 
     total++;
 
-    if (int.TryParse(input, out int userAnswer))
+    if (decimal.TryParse(input, out decimal userAnswer))
     {
         if (userAnswer == correctAnswer)
         {
